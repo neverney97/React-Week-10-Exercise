@@ -1,12 +1,17 @@
 import React from 'react'
 import Item from './item'
+import useMessagesStore from '../store/messagesStore';
 
-const List = (props) => {
+const List = () => {
+  // Access messages from the global store
+  const messages = useMessagesStore((state) => state.messages);
+
+
   return (
     <div>
         <h1 className='text-3xl font-semibold text-slate-800 text-center mb-6'>UserList</h1>
-        {props.usersList.map((user,index) => (
-            <Item key={index} details={user} editUser={props.editedUser} deleteUser={props.deletedUser}/>
+        {messages.map((msg) => (
+            <Item key={msg.id} msg={msg}/>
         )
         )}
     </div>

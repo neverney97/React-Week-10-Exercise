@@ -1,11 +1,17 @@
 import { useState } from 'react'; 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'; 
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'; 
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import useMessagesStore from '../store/messagesStore';
 
-const Item = (props) => {
+
+const Item = ({msg}) => {
+
+  const {addNewMessage, messages} = useMessagesStore();
+
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(props.details.name);
-  const [email, setEmail] = useState(props.details.email);
+  const [name, setName] = useState(msg.name);
+  const [email, setEmail] = useState(msg.email);
+  const [message, setMessage] = useState(msg.message);
 
   const handleOpen = () => {
     setOpen(true);
@@ -18,27 +24,34 @@ const Item = (props) => {
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
-// Edit function to update user details
-  const handleEdit = () => {
-    const updatedDetails = {
-      name,
-      email
-    };
-    props.editUser(props.details.id, updatedDetails);
-    setOpen(false);
+
+  const handleMessage = (e) => {
+    setMessage(e.target.value);
   };
 
-  // Delete function to remove user
-const handleDelete = () => {
-    props.deleteUser(props.details.id);
-    setOpen(false);
-  };
+// // Edit function to update user details
+//   const handleEdit = () => {
+//     const updatedDetails = {
+//       name,
+//       email,
+//       message,
+//     };
+//     props.editUser(props.details.id, updatedDetails);
+//     setOpen(false);
+//   };
+
+//   // Delete function to remove user
+// const handleDelete = () => {
+//     props.deleteUser(props.details.id);
+//     setOpen(false);
+  // };
 
   return (
     <div>
       <div className='flex grid grid-cols-2 items-center justify-between bg-white rounded-xl shadow-sm hover:shadow-md p-4 mb-4 transition-transform transform hover:scale-105'>
-        <h1 className='text-xl font-semibold text-slate-800'>{props.details.name}</h1>
-        <h3>{props.details.email}</h3>
+        <h1 className='text-xl font-semibold text-slate-800'>{msg.name}</h1>
+        <h3>{msg.email}</h3>
+        <h3 className='col-span-2 my-2 text-slate-600'>{msg.message}</h3>
         <div>
           <button
             onClick={handleOpen}
@@ -52,7 +65,7 @@ const handleDelete = () => {
         </div>
       </div>
 
-      <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
+      {/* <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
         <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -109,7 +122,7 @@ const handleDelete = () => {
             </DialogPanel>
           </div>
         </div>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

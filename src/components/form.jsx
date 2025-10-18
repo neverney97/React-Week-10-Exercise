@@ -1,7 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useMessagesStore from '../store/messagesStore';
 
-export default function Form(props) {
+export default function Form() {
+
+    const { addNewMessage,messages } = useMessagesStore();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -18,18 +22,26 @@ export default function Form(props) {
     setMessage(event.target.value);
   }
 
+  // Log messages whenever they are updated
+  useEffect(() => {
+    console.log("Messages updated:", messages);
+  }, [messages]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    let newUser = {
+    let newMessage = {
       name: name,
       email: email,
+      message: message
     };
 
-    props.addUser(newUser);
+    addNewMessage(newMessage);
     setName('');
+    setEmail('');
+    setMessage('');
 
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-slate-200 flex items-center justify-center p-6">
@@ -57,7 +69,7 @@ export default function Form(props) {
             className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition"
           />
         </div>
-        {/* <div>
+        <div>
           <label className="block text-sm font-medium text-slate-600">Message</label>
           <textarea
             value={message}
@@ -66,7 +78,7 @@ export default function Form(props) {
             required
             className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition"
           />
-        </div> */}
+        </div>
         <button
           type="submit"
           className="w-full bg-indigo-600 text-white font-medium py-3 rounded-xl hover:bg-indigo-700 shadow-md transition"
